@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 /* FUNCIONES */
-import { PostData } from "../../../../services/PostData";
+// import { PostData } from "../../../../services/PostData";
 
 /* ESTILOS */
 import "./Login.css";
@@ -35,25 +36,49 @@ export default class Login extends Component {
     }
 
     if (this.state.email && this.state.password) {
-      PostData("login", this.state).then(result => {
-        let responseJSON = result;
+      // PostData("login", this.state).then(result => {
+      //   let responseJSON = result;
 
-        if (responseJSON.userData) {
+      //   if (responseJSON.userData) {
 
-          // Pasa los datos en sessión
-          sessionStorage.setItem("userData", JSON.stringify(responseJSON));
+      //     // Pasa los datos en sessión
+      //     sessionStorage.setItem("userData", JSON.stringify(responseJSON));
 
-          /* Logeo satisfactorio */
-          this.setState({
-            type: responseJSON.userData.type,
-            isLogged: true,
-            redirect: true
-          });
-        } else {
-          /* Error al logar */
-          this.setState({ accessError: true });
-        }
-      });
+      //     /* Logeo satisfactorio */
+      //     this.setState({
+      //       type: responseJSON.userData.type,
+      //       isLogged: true,
+      //       redirect: true
+      //     });
+      //   } else {
+      //     /* Error al logar */
+      //     this.setState({ accessError: true });
+      //   }
+      // });
+
+      const url = 'http://serviciowebfeelgood.000webhostapp.com/api/login?';
+      let params = 'email=' + this.state.email + '&password=' + this.state.password; 
+
+      axios.post(url + params)
+            .then(response => {
+              let responseJSON = response.data;
+
+              if (response.status === 200) {
+
+                // Pasa los datos en sessión
+                sessionStorage.setItem("userData", JSON.stringify(responseJSON));
+      
+                /* Logeo satisfactorio */
+                this.setState({
+                  type: responseJSON.userData.type,
+                  isLogged: true,
+                  redirect: true
+                });
+              } else {
+                /* Error al logar */
+                this.setState({ accessError: true });
+              }
+            });
     }
   }
 
