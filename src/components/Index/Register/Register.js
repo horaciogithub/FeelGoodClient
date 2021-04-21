@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import axios from "axios";
 
 /* DatePicker */
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 /* Funciones */
-import { PostData } from '../../../services/PostData';
+// import { PostData } from '../../../services/PostData';
 
 /* Estilos */
 import './Register.css';
@@ -94,27 +95,57 @@ export default class Register extends Component {
 
         this.checkForm();
 
-        PostData('register', this.state).then((result) => {
-            let responseJSON = result;
+        const url = 'http://serviciowebfeelgood.000webhostapp.com/api/register?';
+        let params = 'name=' + this.state.name + '&email=' + this.state.email + '&password=' + this.state.password
+                     + '&c_password=' + this.state.c_password + '&gender=' + this.state.gender + '&heigth' + this.state.gender 
+                     + '&weigth=' + this.state.gender + '&birth_date=' + this.state.birth_date + '&type=' + this.state.type
+                     + '&surname=' + this.state.surname; 
 
-            if (responseJSON.userData) {
+                     console.log(params)
 
-                // Pasa los datos en sessión
-                sessionStorage.setItem("userData", JSON.stringify(responseJSON));
 
-                /* Logeo tras el registro */
-                this.setState({
-                    UserType: responseJSON.userData.type,
-                    //isLogged: true,
-                    redirect: true,
-                });
-            }
+        axios.post(url + params)
+        .then(response => {
+          let responseJSON = response.data;
 
-            else {
-                /* Acceso denegado */
-                console.log("no entras")
-            }
-        })
+          if (response.status === 200) {
+
+            // Pasa los datos en sessión
+            sessionStorage.setItem("userData", JSON.stringify(responseJSON));
+  
+            /* Logeo satisfactorio */
+            this.setState({
+              type: responseJSON.userData.type,
+              isLogged: true,
+              redirect: true
+            });
+          } else {
+            /* Error al logar */
+            this.setState({ accessError: true });
+          }
+        });
+
+        // PostData('register', this.state).then((result) => {
+        //     let responseJSON = result;
+
+        //     if (responseJSON.userData) {
+
+        //         // Pasa los datos en sessión
+        //         sessionStorage.setItem("userData", JSON.stringify(responseJSON));
+
+        //         /* Logeo tras el registro */
+        //         this.setState({
+        //             UserType: responseJSON.userData.type,
+        //             //isLogged: true,
+        //             redirect: true,
+        //         });
+        //     }
+
+        //     else {
+        //         /* Acceso denegado */
+        //         console.log("no entras")
+        //     }
+        // })
     }
 
     onChange(e) {

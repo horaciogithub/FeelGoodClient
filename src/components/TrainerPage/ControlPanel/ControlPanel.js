@@ -122,7 +122,7 @@ export default class cPanel extends Component {
 
         // Carga los clientes
         //axios.get("http://serviciowebfeelgood.000webhostapp.com/api/clients")
-        axios.get("http://localhost:8000/api/clients")
+        axios.get("https://serviciowebfeelgood.000webhostapp.com/api/clients")
             .then(response => {
                 this.setState({
                     clients: response.data,
@@ -133,7 +133,7 @@ export default class cPanel extends Component {
             });
 
         // Carga las tablas de ejercicios 
-        axios.get("http://localhost:8000/api/exercices")
+        axios.get("https://serviciowebfeelgood.000webhostapp.com/api/exercices")
             .then(response => {
                 this.setState({
                     exercices: response.data,
@@ -214,7 +214,7 @@ export default class cPanel extends Component {
         let value = e.target.value
 
         // Carga la tabla del cliente segun su email
-        axios.post("http://localhost:8000/api/clientTable", { email: value })
+        axios.post("https://serviciowebfeelgood.000webhostapp.com/api/clientTable", { email: value })
             .then(response => {
                 let data = response.data.data[0]
 
@@ -267,7 +267,7 @@ export default class cPanel extends Component {
                 "email": this.state.email,
             }
 
-            axios.delete('http://localhost:8000/api/deleteTable', { data })
+            axios.delete('https://serviciowebfeelgood.000webhostapp.com/api/deleteTable', { data })
                 .then(response => {
                     this.reloadClientsHandler();
 
@@ -291,7 +291,7 @@ export default class cPanel extends Component {
 
     reloadClientsHandler = () => {
         // Recarga la tabla de clientes
-        axios.get("http://localhost:8000/api/clients")
+        axios.get("https://serviciowebfeelgood.000webhostapp.com/api/clients")
             .then(response => {
                 this.setState({
                     clients: response.data,
@@ -304,7 +304,7 @@ export default class cPanel extends Component {
 
     reloadExercicesHandler = () => {
         // Carga las tablas de ejercicios 
-        axios.get("http://localhost:8000/api/exercices")
+        axios.get("https://serviciowebfeelgood.000webhostapp.com/api/exercices")
             .then(response => {
                 this.setState({
                     exercices: response.data,
@@ -408,7 +408,7 @@ export default class cPanel extends Component {
         if (this.state.routineData.exerc1Name && this.state.routineData.exerc2Name &&
             this.state.routineData.exerc3Name && this.state.routineData.exerc4Name &&
             this.state.routineData.exerc5Name && this.state.routineData.exerc6Name) {
-            axios.post('http://localhost:8000/api/routineRegister', data)
+            axios.post('https://serviciowebfeelgood.000webhostapp.com/api/routineRegister', data)
                 .then(response => {
                     this.reloadExercicesHandler();
                     this.setState({ visibility: true });
