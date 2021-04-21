@@ -1,130 +1,99 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-
-/* FUNCIONES */
+import { ADMIN_ROLE, TRAINER_ROLE, USER_ROLE } from "../../../../constants/permissionsConstants";
 import { PostData } from "../../../../services/PostData";
-
-/* ESTILOS */
 import "./Login.css";
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props);
+function Login() {
 
-    this.state = {
-      email: "",
-      password: "",
-      redirect: false,
-      type: '',
-      accessError: false,
-    };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const [type, setType] = useState('');
+  const [accessError, setAccessError] = useState(false);
 
-    this.login = this.login.bind(this);
-    this.onChange = this.onChange.bind(this);
-  }
-
-  login() {
-    if (!this.state.email) {
+  const login = () => {
+    if (!email) {
       document.getElementById('email').placeholder = "Campo vacío ";
       document.getElementById('email').classList.add("text-error");
     }
 
-    if (!this.state.password) {
+    if (!password) {
       document.getElementById('password').placeholder = "Campo vacío ";
       document.getElementById('password').classList.add("text-error");
     }
 
-    if (this.state.email && this.state.password) {
-      PostData("login", this.state).then(result => {
+    if (email && password) {
+      PostData("login", { email: email, password: password }).then(result => {
         let responseJSON = result;
 
         if (responseJSON.userData) {
-
-          // Pasa los datos en sessión
           sessionStorage.setItem("userData", JSON.stringify(responseJSON));
-
-          /* Logeo satisfactorio */
-          this.setState({
-            type: responseJSON.userData.type,
-            isLogged: true,
-            redirect: true
-          });
+          setType(responseJSON.userData.type);
+          setRedirect(true)
         } else {
-          /* Error al logar */
-          this.setState({ accessError: true });
+          setAccessError(true);
         }
       });
+
     }
   }
 
-  onChange(e) {
-    this.setState({
-      //Con e.target.name, recogemos el valor según el name del input
-      [e.target.name]: e.target.value
-    });
-  }
-
-  render() {
-    // Redirige a la página cuando el usuario haya sido logeado
-    if (this.state.redirect) {
-      if (sessionStorage.getItem("userData")) {
-
-        // Redirige a la página del administrador
-        if (this.state.type === 'admin') {
+  if (redirect) {
+    if (sessionStorage.getItem("userData")) {
+      switch (type) {
+        case ADMIN_ROLE:
           return <Redirect to="/admin" />;
-        }
-
-        // Redirige a la página del entrenador
-        if (this.state.type === 'trainer') {
+        case TRAINER_ROLE:
           return <Redirect to="/trainer" />;
-        }
-
-        // Redirige a la página de clientes
-        if (this.state.type === 'user') {
+        case USER_ROLE:
           return <Redirect to="/user" />;
-        }
+        default:
+          return;
       }
     }
-
-    return (
-      <div className="top-bar">
-
-        <input
-          id="email"
-          type="email"
-          className="email"
-          name="email"
-          maxLength="40"
-          onChange={this.onChange}
-          placeholder="Email"
-          autoComplete="off"
-        />
-
-        <input
-          id="password"
-          type="password"
-          className="password"
-          name="password"
-          maxLength="15"
-          onChange={this.onChange}
-          placeholder="Contraseña"
-          autoComplete="off"
-        />
-
-        <button
-          className="boton"
-          type="submit"
-          name="submit"
-          onClick={this.login}
-        >
-          Entrar
-        </button>
-        <div className="error-container">
-          {this.state.accessError === true ?
-            <p className="login-error"><i className="fas fa-exclamation-circle"></i> Usuario y/o contraseña incorrectos</p> : ''
-          }
-        </div>
-      </div>
-    );
   }
+
+  return (
+    <div className="top-bar">
+
+      <input
+        id="email"
+        type="email"
+        className="email"
+        name="email"
+        maxLength="40"
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        autoComplete="off"
+      />
+
+      <input
+        id="password"
+        type="password"
+        className="password"
+        name="password"
+        maxLength="15"
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Contraseña"
+        autoComplete="off"
+      />
+
+      <button
+        className="boton"
+        type="submit"
+        name="submit"
+        onClick={login}
+      >
+        Entrar
+        </button>
+      <div className="error-container">
+        {accessError === true ?
+          <p className="login-error"><i className="fas fa-exclamation-circle"></i> Usuario y/o contraseña incorrectos</p> : ''
+        }
+      </div>
+    </div>
+  );
 }
+
+export default Login;

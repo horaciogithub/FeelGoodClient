@@ -1,6 +1,6 @@
 export function PostData(type, userData) {
 
-    let BaseUrl = 'http://serviciowebfeelgood.000webhostapp.com/api/';
+    let BaseUrl = 'http://localhost:8000/api/';
 
     return new Promise((resolve, reject) => {
         fetch(BaseUrl + type, {
@@ -8,7 +8,7 @@ export function PostData(type, userData) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ...PERSONAL ACCESS TOKEN HERE...'
+                'Authorization': 'Bearer '
             },
 
             body: JSON.stringify(userData)
@@ -19,7 +19,7 @@ export function PostData(type, userData) {
             })
 
             .catch((error) => {
-                reject(error)
+                reject("Fallo de conexión " + error)
             })
     })
 }

@@ -11,7 +11,7 @@
 /* –––––––––––––––––––––––– */
 
 * {
-  --background: rgb(245,245,245);
+  --background:  rgb(255, 255, 255);
   --texto: #5d646a;
   --borde: #c4c4c4;
   --ligth-red: crimson;
@@ -97,7 +97,7 @@ hr.underline {
 }
 
 #about {
-  padding: 60px 30px 20px 30px;
+  /* padding: 60px 30px 20px 30px; */
 }
 
 .headings {

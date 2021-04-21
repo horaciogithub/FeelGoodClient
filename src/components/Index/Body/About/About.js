@@ -7,11 +7,8 @@ export default class About extends Component {
         return (
             <section id="about" className="firstContent">
                 <div className="container">
-                    {/*<div className="headings">-->*/}
                     <h2>Quiénes somos</h2>
                     <div id="app"></div>
-                    {/*<hr className="underline" />*/}
-                    {/*</div>*/}
                     <div id="first">
                         <p>Tener un peso saludable o ideal no es producto
                         de dejar de comer cuando se tiene algunos kilos extra,
@@ -30,33 +27,33 @@ export default class About extends Component {
                         <a href="https://es.wikipedia.org/wiki/%C3%8Dndice_de_masa_corporal"> IMC (Índice de Masa Corporal)</a></p>
                     </div>
                 </div>
-                <div className="container-fluid">
-                    <div className="row first-content-boxes">
-                        <div className="shadow-md col-sm-4">
-                            <img
-                                src="img/motivation.jpg"
-                                alt=""
-                                width="100%" />
+                <div className="first-content-boxes">
+                    <div className="shadow-md col-sm-3">
+                        <img
+                        className="image"
+                            src="img/motivation.jpg"
+                            alt=""
+                            width="100%" />
 
-                            <p className="texto">Resultados garantizados</p>
-                        </div>
-                        <div className="col-sm-4 separator"></div>
-                        <div className="shadow-lg">
-                            <img
-                                src="img/taller-dietas.1.jpg"
-                                alt=""
-                                width="100%" />
+                        <p className="texto">Resultados garantizados</p>
+                    </div>
+                    <div className="shadow-md col-sm-3">
+                        <img
+                        className="image"
+                            src="img/taller-dietas.1.jpg"
+                            alt=""
+                            width="100%" />
 
-                            <p className="texto">Entrenamiento personalizado</p>
-                        </div>
-                        <div className="shadow-md col-sm-4">
-                            <img
-                                src="img/training.jpg"
-                                alt=""
-                                width="100%" />
+                        <p className="texto">Entrenamiento personalizado</p>
+                    </div>
+                    <div className="shadow-md col-sm-3">
+                        <img
+                        className="image"
+                            src="img/training.jpg"
+                            alt=""
+                            width="100%" />
 
-                            <p className="texto">Te ayudamos a motivarte</p>
-                        </div>
+                        <p className="texto">Te ayudamos a motivarte</p>
                     </div>
                 </div>
             </section>
